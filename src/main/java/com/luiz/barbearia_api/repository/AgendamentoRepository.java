@@ -7,11 +7,14 @@ import java.util.List;
 
 public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> {
 
-    List<Agendamento> findByProfissionalAndData(String profissional, String data);
-
-    boolean existsByProfissionalAndDataAndHorario(
-            String profissional,
+    List<Agendamento> findByDataAndProfissional(
             String data,
-            String horario
+            String profissional
+    );
+
+    boolean existsByDataAndHorarioAndProfissional(
+            String data,
+            String horario,
+            String profissional
     );
 }

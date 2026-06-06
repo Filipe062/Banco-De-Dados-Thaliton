@@ -15,7 +15,8 @@ public class Agendamento {
     private String profissional;
     private String servico;
 
-    // getters e setters
+    public Agendamento() {
+    }
 
     public Long getId() {
         return id;

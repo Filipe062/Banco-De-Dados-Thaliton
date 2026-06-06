@@ -1,5 +1,8 @@
+package com.luiz.barbearia_api.controller;
+
 import com.luiz.barbearia_api.model.Agendamento;
 import com.luiz.barbearia_api.repository.AgendamentoRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,33 +14,48 @@ public class AgendamentoController {
 
     private final AgendamentoRepository repository;
 
-    public AgendamentoController(AgendamentoRepository repository) {
+    public AgendamentoController(
+            AgendamentoRepository repository
+    ) {
         this.repository = repository;
     }
 
-    @GetMapping
-    public List<Agendamento> listar(
-            @RequestParam String profissional,
-            @RequestParam String data
-    ) {
-        return repository.findByProfissionalAndData(profissional, data);
-    }
-
     @PostMapping
-    public String agendar(@RequestBody Agendamento agendamento) {
+    public ResponseEntity<?> salvar(
+            @RequestBody Agendamento agendamento
+    ) {
 
-        boolean ocupado = repository.existsByProfissionalAndDataAndHorario(
-                agendamento.getProfissional(),
-                agendamento.getData(),
-                agendamento.getHorario()
-        );
+        boolean existe =
+                repository.existsByDataAndHorarioAndProfissional(
+                        agendamento.getData(),
+                        agendamento.getHorario(),
+                        agendamento.getProfissional()
+                );
 
-        if (ocupado) {
-            return "Horario indisponivel";
+        if (existe) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Horário já ocupado");
         }
 
-        repository.save(agendamento);
+        return ResponseEntity.ok(
+                repository.save(agendamento)
+        );
+    }
 
-        return "Agendado com sucesso";
+    @GetMapping
+    public List<Agendamento> listar() {
+        return repository.findAll();
+    }
+
+    @GetMapping("/ocupados")
+    public List<Agendamento> horariosOcupados(
+            @RequestParam String data,
+            @RequestParam String profissional
+    ) {
+        return repository.findByDataAndProfissional(
+                data,
+                profissional
+        );
     }
 }
