@@ -8,7 +8,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/clientes")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+        "http://localhost:5173",
+        "https://barbearia-83s8.vercel.app"
+})
 public class ClienteController {
 
     private final ClienteRepository repository;
@@ -55,7 +58,7 @@ public class ClienteController {
         return repository.save(cliente);
     }
 
-    // DELETAR CLIENTE
+    // DELETA
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable Long id) {
         repository.deleteById(id);

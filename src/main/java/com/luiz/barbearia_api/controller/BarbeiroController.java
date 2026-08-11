@@ -8,7 +8,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/barbeiros")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+        "http://localhost:5173",
+        "https://barbearia-83s8.vercel.app"
+})
 public class BarbeiroController {
 
     private final BarbeiroRepository repository;

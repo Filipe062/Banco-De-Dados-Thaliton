@@ -9,7 +9,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/agendamentos")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+        "http://localhost:5173",
+        "https://barbearia-83s8.vercel.app"
+})
 public class AgendamentoController {
 
     private final AgendamentoRepository repository;
